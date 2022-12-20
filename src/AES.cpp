@@ -26,18 +26,12 @@ int main() {
     Key.close();
     
     AES_128.AddOpen(in);
-    //std::cout<<"open\n";
     AES_128.AddKey(key);
-    //std::cout<<"key\n";
     AES_128.KeyExpansion();
-    //std::cout<<"keyexpansion\n";
     AES_128.Crypt();
-    //std::cout<<"crypt\n";
     auto out_str = AES_128.MatrStr(AES_128.OUT);
     AES_128.AddOpen(out_str);
-    //std::cout<<"cipher\n";
     AES_128.Decrypt();
-    //std::cout<<"decrypt\n";
     auto dec_str = AES_128.MatrStr(AES_128.OUT);
 
     std::ofstream Out("../out.txt");
@@ -198,9 +192,6 @@ void AES::KeyExpansion() {
         this->KEYSHEDULE[pos][3] = this->KEYSHEDULE[pos - this->NK][3] ^ temp[3];
         pos++;
     }
-
-    //this->WKEYSHEDULE = this->KEYSHEDULE;
-    
 }
 
 void AES::RotWord(std::vector<unsigned char>& word) {
@@ -300,17 +291,11 @@ void AES::InvShifRows(std::vector<std::vector<unsigned char>>& state) {
 void AES::InvMixColumns(std::vector<std::vector<unsigned char>>& state) {
     auto temp = state;
     for(size_t pos = 0; pos < this->NB; pos++) {
-        //std::cout<<std::hex;
-        //std::cout<<static_cast<int>(GF[14][state[0][pos]])<<' ';
-        //std::cout<<static_cast<int>(GF[11][state[1][pos]])<<' ';
-        //std::cout<<static_cast<int>(GF[13][state[2][pos]])<<' ';
-        //std::cout<<static_cast<int>(GF[9][state[3][pos]])<<'\n';
         temp[0][pos] = GF[14][state[0][pos]] ^ GF[11][state[1][pos]] ^ GF[13][state[2][pos]] ^ GF[9][state[3][pos]];
         temp[1][pos] = GF[9][state[0][pos]] ^ GF[14][state[1][pos]] ^ GF[11][state[2][pos]] ^ GF[13][state[3][pos]];
         temp[2][pos] = GF[13][state[0][pos]] ^ GF[9][state[1][pos]] ^ GF[14][state[2][pos]] ^ GF[11][state[3][pos]];
         temp[3][pos] = GF[11][state[0][pos]] ^ GF[13][state[1][pos]] ^ GF[9][state[2][pos]] ^ GF[14][state[3][pos]];
     }
-    //std::cout<<'\n';
     state = temp;
 }
 
